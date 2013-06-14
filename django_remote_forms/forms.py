@@ -1,4 +1,5 @@
 from django.utils.datastructures import SortedDict
+from copy import copy
 
 from django_remote_forms import fields, logger
 from django_remote_forms.utils import resolve_promise
@@ -145,7 +146,9 @@ class RemoteForm(object):
             initial_data[name] = form_dict['fields'][name]['initial']
 
         if self.form.data:
-            form_dict['data'] = self.form.data
+            data = copy(self.form.data)
+            data._mutable = True
+            form_dict['data'] = data
         else:
             form_dict['data'] = initial_data
 
